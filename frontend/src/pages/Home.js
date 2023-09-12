@@ -1,10 +1,19 @@
+//Imports
+import React from "react";
 import { useEffect } from "react";
-import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
-import WorkoutDetails from "../components/WorkoutDetails";
-import WorkoutForm from "../components/WorkoutForm";
+//Import Components
+import LogDetails from "../components/LogDetails";
+import LogRoutineForm from "../components/LogRoutineForm";
+import Calendar from "../components/Calendar";
+
+//Import contexts
+import { useLogsContext } from "../hooks/useLogsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useMonthLogContext } from "../hooks/useMonthLogContext";
 
 const Home = () => {
+  /*
   const { workouts, dispatch } = useWorkoutsContext();
 
   useEffect(() => {
@@ -19,18 +28,38 @@ const Home = () => {
 
     fetchWorkouts();
   }, [dispatch]);
+   */
+  const { logs, dispatch } = useLogsContext();
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    const fetchLogs = async () => {
+      const response = await fetch("/api/logs", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      const json = await response.json();
+
+      if (response.ok) {
+        dispatch({ type: "SET_LOGS", payload: json });
+      }
+    };
+
+    fetchLogs();
+  }, [dispatch]);
 
   return (
     <div className="grid grid-cols-4 gap-24">
       <div className="col-span-3">
-        {workouts &&
-          workouts.map((workout) => (
-            <div key={workout.id}>
-              <WorkoutDetails key={workout.id} workout={workout} />
+        {/*<Calendar />*/}
+        {logs &&
+          logs.map((log) => (
+            <div key={log.id}>
+              <LogDetails key={log.id} log={log} />
             </div>
           ))}
       </div>
-      <WorkoutForm className="col-span-1" />
+
+      <LogRoutineForm className="col-span-1" />
     </div>
   );
 };

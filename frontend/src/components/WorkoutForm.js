@@ -1,23 +1,33 @@
 import { useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const WorkoutForm = () => {
   const { dispatch } = useWorkoutsContext();
+  const { user } = useAuthContext();
 
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [emptyFields, setEmptyFields] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!user) {
+      setError("you must be loged in");
+      return;
+    }
     const workout = { title, load, reps };
 
     const response = await fetch("api/workouts", {
       method: "POST",
       body: JSON.stringify(workout),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
     });
 
     const json = await response.json();
@@ -39,12 +49,6 @@ const WorkoutForm = () => {
     }
   };
 
-  /*
-  +
-          emptyFields.includes("title")
-            ? "border-red-500"
-            : ""
-  */
   return (
     <form className="py-5" onSubmit={handleSubmit}>
       <h3 className="text-lg font-bold mb-6">Add a New Workout</h3>
