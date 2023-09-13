@@ -1,8 +1,11 @@
 # Log Fit
 ## Table of Contents
-1. [About the App](#about)
-2. [About the App](#ivan)
-
+1. [About the App](#about)  
+2. [Pages](#pages)  
+   a. [Login/Signup](#login)  
+   b. [Home](#home)  
+   c. [Routines](#routines)  
+   d. [Stats](#stats)  
    
 <a name="about"></a>
 ##  About the App 
@@ -19,8 +22,8 @@ To ensure user data security, I've implemented web token-based user authenticati
 - **Postman**: Test API Endpoints
 - **Web Tokens**: User Authentication
 - **RESTful API**: Data Management
-
-<a name="ivan"></a>
+  
+<a name="pages"></a>
 ## Pages 
 ### Login/Signup
 **Descirption:** Login and Signup provides strong user authentication and secerity to protect each users pernonal data. 
@@ -29,7 +32,7 @@ To ensure user data security, I've implemented web token-based user authenticati
 - Login: using your email and password assosiated to your account you can log in to the application to access your data and the rest of the application
 
 **Example:**
-
+<a name="login"></a>
 ### Home
 **Descirption:** Home page displays all loged workouts for the month. displaying the routine colour in the calendar to see what your workout split looks like.
 
@@ -37,6 +40,7 @@ To ensure user data security, I've implemented web token-based user authenticati
 
 **Example:**
 
+<a name="routines"></a>
 ### Routines
 **Description:** 
 - Routine page displays all created routine and routine attributes 
@@ -49,6 +53,7 @@ To ensure user data security, I've implemented web token-based user authenticati
 
 **Example:**
 
+<a name="stats"></a>
 ### Stats
 **Description:** Stats page consist of many statisitics derived from your loged routines
 **Example:**
