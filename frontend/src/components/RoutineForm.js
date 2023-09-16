@@ -64,7 +64,7 @@ const RoutineForm = () => {
     const routine = { title, exercises };
 
     //send post request
-    const response = await fetch(process.env.REACT_APP_API + "api/routines", {
+    const response = await fetch(process.env.REACT_APP_API + "/api/routines", {
       method: "POST",
       body: JSON.stringify(routine),
       headers: {

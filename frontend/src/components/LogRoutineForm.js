@@ -41,7 +41,7 @@ const LogRoutineForm = () => {
     }
     const log = { routine, date };
 
-    const response = await fetch("api/logs", {
+    const response = await fetch(process.env.REACT_APP_API + "/api/logs", {
       method: "POST",
       body: JSON.stringify(log),
       headers: {
