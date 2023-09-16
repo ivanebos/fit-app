@@ -29,9 +29,6 @@ const Navbar = () => {
             <Link to="/Routines" className="my-auto">
               <p className="text-lg hover:underline">Routines</p>
             </Link>
-            <Link to="/Logs" className="my-auto">
-              <p className="text-lg hover:underline">Logs</p>
-            </Link>
             <Link to="/Stats" className="my-auto">
               <p className="text-lg hover:underline">Stats</p>
             </Link>

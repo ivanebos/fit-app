@@ -8,6 +8,7 @@ const routineSchema = new Schema(
       type: String,
       required: true,
     },
+
     exercises: { type: [String], required: true },
     user_id: {
       type: String,

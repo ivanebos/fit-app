@@ -1,7 +1,8 @@
+//Import
 const express = require("express");
-
 const { loginUser, signupUser } = require("../controllers/userController");
 
+//Init
 const router = express.Router();
 
 //login router

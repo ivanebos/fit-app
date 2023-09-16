@@ -1,3 +1,4 @@
+//Import
 const express = require("express");
 const {
   getLogs,
@@ -7,6 +8,7 @@ const {
   updateLog,
 } = require("../controllers/routineLogController");
 
+//Middle ware
 const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
@@ -17,7 +19,7 @@ router.use(requireAuth);
 //get all logs
 router.get("/", getLogs);
 
-//get single log
+//get logs for bettwen 2 dates
 router.get("/:from/:to", getLog);
 
 //post new log

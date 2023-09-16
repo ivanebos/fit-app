@@ -1,6 +1,6 @@
 //Imports
 import React from "react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 //Import components
 import RoutineUpdateModal from "./RoutineUpdateModal";
@@ -8,6 +8,7 @@ import RoutineUpdateModal from "./RoutineUpdateModal";
 //Import Contexts
 import { useRoutinesContext } from "../hooks/useRoutinesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useUpdateContext } from "../hooks/useUpdateContext";
 
 //Import Libs
 import formateDistanceToNow from "date-fns/formatDistanceToNow";
@@ -19,17 +20,19 @@ import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 const RoutineDetails = ({ routine }) => {
   //set contexts
   const { dispatch } = useRoutinesContext();
+  const { updatingRoutine, dispatch: dispatchUpdate } = useUpdateContext();
   const { user } = useAuthContext();
-  const [currentRoutine, setRoutine] = useState(routine);
 
+  const test = routine;
   //init variables
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   //func to open update modal
   const openModal = () => {
-    console.log("EXTRA: ", routine);
-    setRoutine(routine);
+    const temp = routine;
 
+    dispatchUpdate({ type: "SET_UPDATE", payload: temp });
+    console.log("DIS:", updatingRoutine);
     setIsModalOpen(true);
   };
 
@@ -73,16 +76,17 @@ const RoutineDetails = ({ routine }) => {
     }
   };
 
+  console.log("R: ", routine.exercises);
+
   return (
     <div className="bg-white p-5 shadow-sm rounded h-full flex flex-col justify-between">
       <RoutineUpdateModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        routine={currentRoutine}
       ></RoutineUpdateModal>
       <div>
         <div className="flex justify-between">
-          <p className="text-xl text-blue-500 font-bold mb-4">
+          <p className={"text-xl font-bold mb-4 text-blue-500"}>
             {routine.title}
           </p>
           <div>
@@ -97,7 +101,7 @@ const RoutineDetails = ({ routine }) => {
         <strong>Exsersises: </strong>
         <ul className="mb-5 list-disc pl-6">
           {routine.exercises &&
-            routine.exercises.map((exercise, i) => <li key={i}>{exercise}</li>)}
+            routine.exercises.map((x, i) => <li key={i}>{x}</li>)}
         </ul>
       </div>
       <div className="flex justify-between">

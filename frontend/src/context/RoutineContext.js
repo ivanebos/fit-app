@@ -5,12 +5,13 @@ export const RoutineContext = createContext();
 export const rountinesReducer = (state, action) => {
   switch (action.type) {
     case "SET_ROUTINES":
-      console.log(action.payload);
+      console.log("BAD");
       return {
         routines: action.payload,
       };
     case "CREATE_ROUTINE":
-      console.log([action.payload, ...state.routines]);
+      console.log("BAD");
+
       return {
         routines: [action.payload, ...state.routines],
       };

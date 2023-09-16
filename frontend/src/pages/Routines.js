@@ -47,10 +47,10 @@ const Home = () => {
       fetchRoutines();
     }
   }, [dispatch, user]);
-
+  console.log("THIS: ", routines);
   return (
-    <div className="grid grid-cols-4 gap-24">
-      <div className="col-span-3 grid grid-cols-3 gap-x-3 gap-y-5">
+    <div className="flex gap-24">
+      <div className="w-5/6 h-min grid grid-cols-3 gap-x-3 gap-y-5">
         {/*workouts &&
           workouts.map((workout) => (
             <div key={workout.id}>
@@ -59,12 +59,12 @@ const Home = () => {
           ))*/}
         {routines &&
           routines.map((routine) => (
-            <div key={routine.id}>
+            <div key={routine.id} className="">
               <RoutineDetails key={routine.id} routine={routine} />
             </div>
           ))}
       </div>
-      <RoutineForm className="col-span-1" />
+      <RoutineForm className="w-1/6" />
     </div>
   );
 };

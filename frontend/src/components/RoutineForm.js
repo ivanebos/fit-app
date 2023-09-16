@@ -10,6 +10,11 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { BsFillTrashFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 
+//Libs
+//import { HexColorPicker } from "react-colorful";
+
+const YourComponent = () => {};
+
 //A Form to add routines
 const RoutineForm = () => {
   //init contexts
@@ -21,6 +26,9 @@ const RoutineForm = () => {
   const [exercises, setExercises] = useState([""]);
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
+
+  //For later
+  //const [color, setColor] = useState("#aabbcc");
 
   //Add exersise textbox
   const handleAddExercise = (e) => {
@@ -52,7 +60,7 @@ const RoutineForm = () => {
       return;
     }
 
-    //set routine
+    //set routine ** Add Color Later
     const routine = { title, exercises };
 
     //send post request
@@ -90,7 +98,6 @@ const RoutineForm = () => {
     <form className="py-5" onSubmit={handleSubmit}>
       <h3 className="text-lg font-bold mb-6">Create Routine</h3>
       <label className="p-1">Title:</label>
-
       <input
         className={
           "p-1 mb-4 w-full rounded " +
@@ -100,7 +107,13 @@ const RoutineForm = () => {
         onChange={(e) => setTitle(e.target.value)}
         value={title}
       />
-
+      {/*
+      <label className="p-1">Colour:</label>
+    
+      <div className={"p-1 mb-4 w-full  "}>
+        <HexColorPicker color={color} onChange={setColor} />
+      </div>
+      */}
       <label className="p-1">Exercises:</label>
       {exercises &&
         exercises.map((exercise, index) => (
@@ -135,7 +148,6 @@ const RoutineForm = () => {
       <button className="p-2 bg-blue-400 rounded text-white">
         Add Routine
       </button>
-
       {error && (
         <div className="my-5 p-2 bg-red-100 rounded border-red-500 border text-red-500">
           {error}

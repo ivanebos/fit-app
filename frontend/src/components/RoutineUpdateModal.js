@@ -6,6 +6,7 @@ import { useEffect } from "react";
 //Import Contexts
 import { useRoutinesContext } from "../hooks/useRoutinesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useUpdateContext } from "../hooks/useUpdateContext";
 
 //Import Icons
 import { AiOutlineCloseCircle } from "react-icons/ai";
@@ -13,54 +14,60 @@ import { GrAdd } from "react-icons/gr";
 import { FiDelete } from "react-icons/fi";
 
 //For Routine update Modal
-const RoutineUpdateModal = ({ isOpen, onClose, routine }) => {
+const RoutineUpdateModal = ({ isOpen, onClose }) => {
   const { dispatch } = useRoutinesContext();
+  const { updatingRoutine, dispatch: dispatchUpdate } = useUpdateContext();
+
   const { user } = useAuthContext();
 
   //init variables
-  const [title, setTitle] = useState(routine.title);
-
-  let dic = {};
-  routine.exercises.forEach((item, i) => {
-    dic[i] = item;
-  });
-  console.log(dic);
-  const [exercises, setExercises] = useState(dic);
+  const [title, setTitle] = useState("");
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
 
   //Add Exercise
   const handleAddExercise = (e) => {
     e.preventDefault();
-    const indexes = Object.keys(exercises);
-    const lastIndex = indexes[indexes.length - 1];
 
-    const newTextBoxes = { ...exercises, lastIndex: "" };
-    setExercises(newTextBoxes);
+    var temp = updatingRoutine;
+
+    temp.exercises.push("");
+
+    dispatchUpdate({ type: "SET_UPDATE", payload: temp });
   };
 
   //Remove Exercise
   const handleRemoveExercise = (index) => {
-    const newTextBoxes = exercises.filter((_, i) => i !== index);
-    setExercises(newTextBoxes);
+    var temp = updatingRoutine;
+
+    temp.exercises = temp.exercises.filter((_, i) => i !== index);
+
+    dispatchUpdate({ type: "SET_UPDATE", payload: temp });
   };
 
   //Change Exsersise
   const handleExerciseChange = (index, value) => {
-    const newTextBoxes = [...exercises];
-    newTextBoxes[index] = value;
-    setExercises(newTextBoxes);
+    var temp = updatingRoutine;
+
+    temp.exercises[index] = value;
+
+    dispatchUpdate({ type: "SET_UPDATE", payload: temp });
   };
 
   //Update Routine
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    var newTitle = !title ? updatingRoutine.title : title;
+
     //new updated routine
-    const newRoutine = { title, exercises };
+    const newRoutine = {
+      title: newTitle,
+      exercises: updatingRoutine.exercises,
+    };
 
     //patch request
-    const response = await fetch("api/routines/" + routine._id, {
+    const response = await fetch("api/routines/" + updatingRoutine._id, {
       method: "PATCH",
       body: JSON.stringify(newRoutine),
       headers: {
@@ -101,12 +108,6 @@ const RoutineUpdateModal = ({ isOpen, onClose, routine }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur">
       <div className="bg-white w-1/4 p-6 rounded-lg shadow-lg">
-        <button
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-          onClick={onClose}
-        >
-          Close
-        </button>
         <div className="flex justify-between">
           <h3 className="text-lg font-bold mb-1">Update Routine</h3>
 
@@ -122,13 +123,13 @@ const RoutineUpdateModal = ({ isOpen, onClose, routine }) => {
 
           <input
             className=" p-1 mb-4 w-full rounded placeholder-gray-500 border-gray-500 border"
-            placeholder={routine.title}
+            placeholder={updatingRoutine.title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
           <label className="p-1">Exercises:</label>
-          {Object.values(exercises) &&
-            Object.values(exercises).map((exercise, index) => (
+          {updatingRoutine.exercises &&
+            updatingRoutine.exercises.map((y, index) => (
               <div key={index} className="flex ">
                 <input
                   className={
@@ -139,8 +140,7 @@ const RoutineUpdateModal = ({ isOpen, onClose, routine }) => {
                   }
                   type="text"
                   onChange={(e) => handleExerciseChange(index, e.target.value)}
-                  placeholder={routine.exercises[index]}
-                  // value={exercise}
+                  value={y}
                 />
                 <button
                   type="button"
