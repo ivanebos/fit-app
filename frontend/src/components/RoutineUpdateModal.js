@@ -67,14 +67,17 @@ const RoutineUpdateModal = ({ isOpen, onClose }) => {
     };
 
     //patch request
-    const response = await fetch("api/routines/" + updatingRoutine._id, {
-      method: "PATCH",
-      body: JSON.stringify(newRoutine),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
+    const response = await fetch(
+      process.env.REACT_APP_API + "api/routines/" + updatingRoutine._id,
+      {
+        method: "PATCH",
+        body: JSON.stringify(newRoutine),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
 
     const json = await response.json();
 

@@ -13,9 +13,12 @@ const LogDetails = ({ log }) => {
   const { user } = useAuthContext();
 
   const updateRoutine = async () => {
-    const response = await fetch("/api/logs/" + log._id, {
-      method: "UPDATE",
-    });
+    const response = await fetch(
+      process.env.REACT_APP_API + "/api/logs/" + log._id,
+      {
+        method: "UPDATE",
+      }
+    );
 
     const json = await response.json();
 
@@ -28,12 +31,15 @@ const LogDetails = ({ log }) => {
       return;
     }
 
-    const response = await fetch("/api/logs/" + log._id, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
+    const response = await fetch(
+      process.env.REACT_APP_API + "/api/logs/" + log._id,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
 
     const json = await response.json();
 

@@ -34,7 +34,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchLogs = async () => {
-      const response = await fetch("/api/logs", {
+      const response = await fetch(process.env.REACT_APP_API + "/api/logs", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const json = await response.json();

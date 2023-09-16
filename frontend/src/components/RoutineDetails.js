@@ -30,7 +30,6 @@ const RoutineDetails = ({ routine }) => {
   //func to open update modal
   const openModal = () => {
     const temp = routine;
-
     dispatchUpdate({ type: "SET_UPDATE", payload: temp });
     console.log("DIS:", updatingRoutine);
     setIsModalOpen(true);
@@ -62,12 +61,15 @@ const RoutineDetails = ({ routine }) => {
     }
 
     //send delete request
-    const response = await fetch("/api/routines/" + routine._id, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
+    const response = await fetch(
+      process.env.REACT_APP_API + "/api/routines/" + routine._id,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
 
     const json = await response.json();
 

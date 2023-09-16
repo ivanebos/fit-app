@@ -5,7 +5,6 @@ export const LogContext = createContext();
 export const logsReducer = (state, action) => {
   switch (action.type) {
     case "SET_LOGS":
-      console.log("madeit");
       return {
         logs: action.payload,
       };

@@ -15,6 +15,7 @@ const Home = () => {
 
   const { routines, dispatch } = useRoutinesContext();
   const { user } = useAuthContext();
+
   {
     /* 
   useEffect(() => {
@@ -34,9 +35,12 @@ const Home = () => {
   }
   useEffect(() => {
     const fetchRoutines = async () => {
-      const response = await fetch("/api/routines", {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const response = await fetch(
+        process.env.REACT_APP_API + "/api/routines",
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
       const json = await response.json();
 
       if (response.ok) {

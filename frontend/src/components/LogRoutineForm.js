@@ -17,9 +17,12 @@ const LogRoutineForm = () => {
 
   useEffect(() => {
     const getRoutines = async () => {
-      const response = await fetch("/api/routines", {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const response = await fetch(
+        process.env.REACT_APP_API + "/api/routines",
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
       const json = await response.json();
 
       if (response.ok) {

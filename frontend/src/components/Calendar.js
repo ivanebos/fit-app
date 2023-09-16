@@ -56,15 +56,12 @@ const Calendar = () => {
   useEffect(() => {
     console.log("useEffect Triggered");
     const fetchData = async () => {
-      console.log("Fetching Data");
       const data = await fetchLogs(activeDate);
 
       setMonthLogs((prevData) => ({
         ...prevData,
         [activeDate.toISOString()]: data,
       }));
-
-      console.log("Month Logs", monthLogs);
     };
     fetchData(new Date());
   }, [activeDate, monthLogs]);
@@ -74,7 +71,9 @@ const Calendar = () => {
     const from = date.getMonth() + 1;
     const to = from + 1;
 
-    const response = await fetch(`/api/logs/${year}-${from}-1/${year}-${to}-1`);
+    const response = await fetch(
+      process.env.REACT_APP_API + `/api/logs/${year}-${from}-1/${year}-${to}-1`
+    );
     const json = await response.json();
     if (response.ok) {
       return json;
