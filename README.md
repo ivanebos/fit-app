@@ -13,7 +13,8 @@ Created **MERN** Stack application offering users a platform to manage workout r
 
 To ensure user data security, I've implemented web token-based user authentication
 
-(Check it Out)[https://logfit.netlify.app/]
+[Check it Out](https://logfit.netlify.app/)
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/aff0e34c-55e4-4e6c-b331-6674ad82e822/deploy-status)](https://app.netlify.com/sites/logfit/deploys)
 
 
