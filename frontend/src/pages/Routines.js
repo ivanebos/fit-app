@@ -1,38 +1,21 @@
+//Imports
 import { useEffect } from "react";
+
+//Import Contexts
 import { useRoutinesContext } from "../hooks/useRoutinesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
-import WorkoutDetails from "../components/WorkoutDetails";
+//Import Components
 import RoutineDetails from "../components/RoutineDetails";
-
-import WorkoutForm from "../components/WorkoutForm";
 import Calendar from "../components/Calendar";
 import RoutineForm from "../components/RoutineForm";
-import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
 const Home = () => {
-  //const { workouts, dispatch } = useWorkoutsContext();
-
+  //Contexts
   const { routines, dispatch } = useRoutinesContext();
   const { user } = useAuthContext();
 
-  {
-    /* 
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      const response = await fetch("/api/workouts");
-      const json = await response.json();
-
-      if (response.ok) {
-        dispatch({ type: "SET_WORKOUTS", payload: json });
-      }
-    };
-
-    fetchWorkouts();
-  }, [dispatch]);
-
-  */
-  }
+  //Get routines
   useEffect(() => {
     const fetchRoutines = async () => {
       const response = await fetch(
@@ -51,16 +34,10 @@ const Home = () => {
       fetchRoutines();
     }
   }, [dispatch, user]);
-  console.log("THIS: ", routines);
+
   return (
     <div className="flex gap-24">
       <div className="w-5/6 h-min grid grid-cols-3 gap-x-3 gap-y-5">
-        {/*workouts &&
-          workouts.map((workout) => (
-            <div key={workout.id}>
-              <WorkoutDetails key={workout.id} workout={workout} />
-            </div>
-          ))*/}
         {routines &&
           routines.map((routine) => (
             <div key={routine.id} className="">

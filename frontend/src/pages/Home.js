@@ -13,25 +13,11 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useMonthLogContext } from "../hooks/useMonthLogContext";
 
 const Home = () => {
-  /*
-  const { workouts, dispatch } = useWorkoutsContext();
-
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      const response = await fetch("/api/workouts");
-      const json = await response.json();
-
-      if (response.ok) {
-        dispatch({ type: "SET_WORKOUTS", payload: json });
-      }
-    };
-
-    fetchWorkouts();
-  }, [dispatch]);
-   */
+  //Contexts
   const { logs, dispatch } = useLogsContext();
   const { user } = useAuthContext();
 
+  //Get logs
   useEffect(() => {
     const fetchLogs = async () => {
       const response = await fetch(process.env.REACT_APP_API + "/api/logs", {
@@ -58,7 +44,6 @@ const Home = () => {
             </div>
           ))}
       </div>
-
       <LogRoutineForm className="col-span-1" />
     </div>
   );

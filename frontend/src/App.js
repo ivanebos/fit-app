@@ -1,4 +1,7 @@
+//Imports
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+//Import Contexts
 import { useAuthContext } from "./hooks/useAuthContext";
 
 //page & componets
@@ -12,6 +15,7 @@ import Signup from "./pages/Signup";
 import Footer from "./components/Footer";
 
 function App() {
+  //Authentication obj
   const { user } = useAuthContext();
 
   return (
