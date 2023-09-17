@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
+import { ReactComponent as LoadingSVG } from "../assets/spinner.svg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const { login, error, isLoading } = useLogin();
 
   const handleSubmit = async (e) => {
@@ -38,12 +40,16 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <button
-        className="p-2 bg-blue-400 rounded text-white"
-        disabled={isLoading}
-      >
-        Log In
-      </button>
+      {!isLoading && (
+        <button
+          className="p-2 bg-blue-400 rounded text-white"
+          disabled={isLoading}
+        >
+          Log In
+        </button>
+      )}
+      {isLoading && <LoadingSVG className="scale-150 mt-2 mb-7 mx-2 " />}
+
       {error && (
         <div className="my-5 p-2 bg-red-100 rounded border-red-500 border text-red-500">
           {error}

@@ -3,6 +3,7 @@ import { useLogsContext } from "../hooks/useLogsContext";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { ReactComponent as LoadingSVG } from "../assets/spinner.svg";
 
 const LogRoutineForm = () => {
   const { dispatch } = useLogsContext();
@@ -12,11 +13,14 @@ const LogRoutineForm = () => {
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const [routines, setRoutines] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { user } = useAuthContext();
 
   useEffect(() => {
     const getRoutines = async () => {
+      setLoading(true);
+
       const response = await fetch(
         process.env.REACT_APP_API + "/api/routines",
         {
@@ -27,6 +31,11 @@ const LogRoutineForm = () => {
 
       if (response.ok) {
         setRoutines(json);
+        setLoading(false);
+      }
+
+      if (!response.ok) {
+        setLoading(false);
       }
     };
     getRoutines();
@@ -40,6 +49,7 @@ const LogRoutineForm = () => {
       return;
     }
     const log = { routine, date };
+    setLoading(true);
 
     const response = await fetch(process.env.REACT_APP_API + "/api/logs", {
       method: "POST",
@@ -55,14 +65,14 @@ const LogRoutineForm = () => {
     if (!response.ok) {
       setError(json.error);
       setEmptyFields(json.emptyFields);
+      setLoading(false);
     }
     if (response.ok) {
       setRoutine(0);
       setDate(new Date());
       setError(null);
       setEmptyFields([]);
-
-      console.log("new log added", json);
+      setLoading(false);
 
       dispatch({ type: "CREATE_LOG", payload: json });
     }
@@ -102,10 +112,12 @@ const LogRoutineForm = () => {
         selected={date}
         onChange={(date) => setDate(date)}
       />
-
-      <button className="p-2 bg-blue-400 rounded text-white">
-        Log Routine
-      </button>
+      {!loading && (
+        <button className="p-2 bg-blue-400 rounded text-white">
+          Log Routine
+        </button>
+      )}
+      {loading && <LoadingSVG className="scale-150 mt-2 mb-7 mx-2 " />}
 
       {error && (
         <div className="my-5 p-2 bg-red-100 rounded border-red-500 border text-red-500">

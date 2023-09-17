@@ -9,11 +9,10 @@ import { useAuthContext } from "../hooks/useAuthContext";
 //Import Icons
 import { BsFillTrashFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
+import { ReactComponent as LoadingSVG } from "../assets/spinner.svg";
 
 //Libs
 //import { HexColorPicker } from "react-colorful";
-
-const YourComponent = () => {};
 
 //A Form to add routines
 const RoutineForm = () => {
@@ -26,7 +25,7 @@ const RoutineForm = () => {
   const [exercises, setExercises] = useState([""]);
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   //For later
   //const [color, setColor] = useState("#aabbcc");
 
@@ -62,7 +61,7 @@ const RoutineForm = () => {
 
     //set routine ** Add Color Later
     const routine = { title, exercises };
-
+    setLoading(true);
     //send post request
     const response = await fetch(process.env.REACT_APP_API + "/api/routines", {
       method: "POST",
@@ -79,10 +78,12 @@ const RoutineForm = () => {
     if (!response.ok) {
       setError(json.error);
       setEmptyFields(json.emptyFields);
+      setLoading(false);
     }
 
     //If respose ok
     if (response.ok) {
+      setLoading(false);
       //re init values
       setTitle("");
       setExercises([""]);
@@ -145,9 +146,13 @@ const RoutineForm = () => {
         <GrAdd className="invert" />
       </button>
       <br />
-      <button className="p-2 bg-blue-400 rounded text-white">
-        Add Routine
-      </button>
+      {!loading && (
+        <button className="p-2 bg-blue-400 rounded text-white">
+          <p>Add Routine </p>
+        </button>
+      )}
+      {loading && <LoadingSVG className="scale-150 mt-2 mb-7 mx-2 " />}
+
       {error && (
         <div className="my-5 p-2 bg-red-100 rounded border-red-500 border text-red-500">
           {error}

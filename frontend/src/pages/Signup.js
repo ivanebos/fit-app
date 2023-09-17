@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSignup } from "../hooks/useSignup";
+import { ReactComponent as LoadingSVG } from "../assets/spinner.svg";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -38,12 +39,16 @@ const Signup = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <button
-        disabled={isLoading}
-        className="p-2 bg-blue-400 rounded text-white"
-      >
-        Sign Up
-      </button>
+      {!isLoading && (
+        <button
+          disabled={isLoading}
+          className="p-2 bg-blue-400 rounded text-white"
+        >
+          Sign Up
+        </button>
+      )}
+      {isLoading && <LoadingSVG className="scale-150 mt-2 mb-7 mx-2 " />}
+
       {error && (
         <div className="my-5 p-2 bg-red-100 rounded border-red-500 border text-red-500">
           {error}
