@@ -1,12 +1,10 @@
 //Imports
 import React from "react";
 import { useState } from "react";
-import { useEffect } from "react";
 
 //Import Contexts
 import { useRoutinesContext } from "../hooks/useRoutinesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useUpdateContext } from "../hooks/useUpdateContext";
 
 //Import Icons
 import { AiOutlineCloseCircle } from "react-icons/ai";
@@ -14,61 +12,78 @@ import { GrAdd } from "react-icons/gr";
 import { FiDelete } from "react-icons/fi";
 
 //For Routine update Modal
-const RoutineUpdateModal = ({ isOpen, onClose }) => {
+const RoutineUpdateModal = ({ isOpen, onClose, modalRoutine, setRoutine }) => {
   const { dispatch } = useRoutinesContext();
-  const { updatingRoutine, dispatch: dispatchUpdate } = useUpdateContext();
 
   const { user } = useAuthContext();
 
   //init variables
-  const [title, setTitle] = useState("");
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
+
+  //Set title
+  const setTitle = (e) => {
+    console.log();
+    const updatedRoutine = {
+      title: e.target.value,
+      exercises: modalRoutine.exercises,
+      _id: modalRoutine._id,
+    };
+
+    setRoutine(updatedRoutine);
+  };
 
   //Add Exercise
   const handleAddExercise = (e) => {
     e.preventDefault();
 
-    var temp = updatingRoutine;
+    //dispatchUpdate({ type: "SET_UPDATE", payload: temp });
+    const updatedRoutine = {
+      title: modalRoutine.title,
+      exercises: [...modalRoutine.exercises, ""],
+      _id: modalRoutine._id,
+    };
 
-    temp.exercises.push("");
-
-    dispatchUpdate({ type: "SET_UPDATE", payload: temp });
+    setRoutine(updatedRoutine);
   };
 
   //Remove Exercise
   const handleRemoveExercise = (index) => {
-    var temp = updatingRoutine;
+    const updatedRoutine = {
+      title: modalRoutine.title,
+      exercises: modalRoutine.exercises.filter((_, i) => i !== index),
+      _id: modalRoutine._id,
+    };
 
-    temp.exercises = temp.exercises.filter((_, i) => i !== index);
-
-    dispatchUpdate({ type: "SET_UPDATE", payload: temp });
+    setRoutine(updatedRoutine);
   };
 
   //Change Exsersise
   const handleExerciseChange = (index, value) => {
-    var temp = updatingRoutine;
+    modalRoutine.exercises[index] = value;
 
-    temp.exercises[index] = value;
+    const updatedRoutine = {
+      title: modalRoutine.title,
+      exercises: modalRoutine.exercises,
+      _id: modalRoutine._id,
+    };
 
-    dispatchUpdate({ type: "SET_UPDATE", payload: temp });
+    setRoutine(updatedRoutine);
   };
 
   //Update Routine
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    var newTitle = !title ? updatingRoutine.title : title;
-
     //new updated routine
     const newRoutine = {
-      title: newTitle,
-      exercises: updatingRoutine.exercises,
+      title: modalRoutine.title,
+      exercises: modalRoutine.exercises,
     };
 
     //patch request
     const response = await fetch(
-      process.env.REACT_APP_API + "api/routines/" + updatingRoutine._id,
+      process.env.REACT_APP_API + "/api/routines/" + modalRoutine._id,
       {
         method: "PATCH",
         body: JSON.stringify(newRoutine),
@@ -95,8 +110,6 @@ const RoutineUpdateModal = ({ isOpen, onClose }) => {
 
       //update routine hook
       dispatch({ type: "UPDATE_ROUTINE", payload: json });
-
-      console.log("new routine added", json);
 
       //close modal
       onClose();
@@ -126,13 +139,13 @@ const RoutineUpdateModal = ({ isOpen, onClose }) => {
 
           <input
             className=" p-1 mb-4 w-full rounded placeholder-gray-500 border-gray-500 border"
-            placeholder={updatingRoutine.title}
-            onChange={(e) => setTitle(e.target.value)}
+            placeholder={modalRoutine.title}
+            onChange={(e) => setTitle(e)}
           />
 
           <label className="p-1">Exercises:</label>
-          {updatingRoutine.exercises &&
-            updatingRoutine.exercises.map((y, index) => (
+          {modalRoutine.exercises &&
+            modalRoutine.exercises.map((y, index) => (
               <div key={index} className="flex ">
                 <input
                   className={

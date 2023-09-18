@@ -1,14 +1,13 @@
 //Imports
 import React from "react";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
-//Import components
+//Import Components
 import RoutineUpdateModal from "./RoutineUpdateModal";
 
 //Import Contexts
 import { useRoutinesContext } from "../hooks/useRoutinesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useUpdateContext } from "../hooks/useUpdateContext";
 
 //Import Libs
 import formateDistanceToNow from "date-fns/formatDistanceToNow";
@@ -20,37 +19,21 @@ import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 const RoutineDetails = ({ routine }) => {
   //set contexts
   const { dispatch } = useRoutinesContext();
-  const { updatingRoutine, dispatch: dispatchUpdate } = useUpdateContext();
   const { user } = useAuthContext();
 
-  const test = routine;
   //init variables
+  const [modalRoutine, setModalRoutine] = useState(routine);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   //func to open update modal
   const openModal = () => {
-    const temp = routine;
-    dispatchUpdate({ type: "SET_UPDATE", payload: temp });
-    console.log("DIS:", updatingRoutine);
+    setModalRoutine(routine);
     setIsModalOpen(true);
   };
 
   //func to close update modal
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  //HELP
-  const updateRoutine = async () => {
-    const response = await fetch("/api/routines/" + routine._id, {
-      method: "UPDATE",
-    });
-
-    const json = await response.json();
-
-    if (response.ok) {
-      dispatch({ type: "UPDATE_ROUTINE", payload: json });
-    }
   };
 
   //Delete routine
@@ -73,18 +56,19 @@ const RoutineDetails = ({ routine }) => {
 
     const json = await response.json();
 
+    //Update context
     if (response.ok) {
       dispatch({ type: "DELETE_ROUTINE", payload: json });
     }
   };
-
-  console.log("R: ", routine.exercises);
 
   return (
     <div className="bg-white p-5 shadow-sm rounded h-full flex flex-col justify-between">
       <RoutineUpdateModal
         isOpen={isModalOpen}
         onClose={closeModal}
+        modalRoutine={modalRoutine}
+        setRoutine={setModalRoutine}
       ></RoutineUpdateModal>
       <div>
         <div className="flex justify-between">
@@ -103,7 +87,7 @@ const RoutineDetails = ({ routine }) => {
         <strong>Exsersises: </strong>
         <ul className="mb-5 list-disc pl-6">
           {routine.exercises &&
-            routine.exercises.map((x, i) => <li key={i}>{x}</li>)}
+            routine.exercises.map((exercise, i) => <li key={i}>{exercise}</li>)}
         </ul>
       </div>
       <div className="flex justify-between">

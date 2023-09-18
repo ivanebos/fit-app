@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRoutinesContext } from "../hooks/useRoutinesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
-//Import Icons
+//Import Assets
 import { BsFillTrashFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { ReactComponent as LoadingSVG } from "../assets/spinner.svg";
@@ -26,6 +26,7 @@ const RoutineForm = () => {
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const [loading, setLoading] = useState(false);
+
   //For later
   //const [color, setColor] = useState("#aabbcc");
 
@@ -62,6 +63,7 @@ const RoutineForm = () => {
     //set routine ** Add Color Later
     const routine = { title, exercises };
     setLoading(true);
+
     //send post request
     const response = await fetch(process.env.REACT_APP_API + "/api/routines", {
       method: "POST",
