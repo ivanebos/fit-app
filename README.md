@@ -27,6 +27,8 @@ To ensure user data security, I've implemented web token-based user authenticati
 - **Postman**: Test API Endpoints
 - **Web Tokens**: User Authentication
 - **RESTful API**: Data Management
+- **Netlify**: Frontend Host
+- **Render**: Backend Host
   
 <a name="pages"></a>
 ## Pages 
